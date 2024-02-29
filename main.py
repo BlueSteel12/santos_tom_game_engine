@@ -26,6 +26,8 @@ class Game:
         #later on we'll store game into with this
     def load_data(self):
         game_folder = path.dirname(__file__)
+        img_folder = path.join(game_folder, 'images')
+        self.player_img = pg.image.load(path.join(img_folder, 'Untitled.png')).convert_alpha()
         self.map_data = []
         '''
         The with statement is a context manager in Python. 
@@ -42,6 +44,8 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bigger = pg.sprite.Group()
+        self.coins = pg.sprite.Group()
+        self.power_ups = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_spritres.add(self.player)
         #  for x in range(10, 20):
@@ -50,13 +54,17 @@ class Game:
             print(row)
             for col, tile in enumerate(tiles):
                 print(col)
-                if tile == 'x':
+                if tile == '1':
                     print("a wall at", row, col)
                     Wall(self, col, row)
                 if tile == 'p':
                     self.player = Player(self, col, row)
                 if tile == '*':
                     Bigger(self, col, row)
+                if tile == 'C':
+                    Coin(self, col, row)
+                if tile == 'U':
+                    PowerUp(self, col, row)
     
     #Run methods, causes the game to work
     def run(self):
