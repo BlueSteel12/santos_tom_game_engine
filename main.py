@@ -7,6 +7,33 @@ import sys
 from random import randint
 from os import path
 
+from math import floor
+'''
+Game design truths:
+goals, rules, feedback, freedom, what the verb, and will it form a sentence 
+
+- Sound effects
+- Changing enenmies
+- Teleportation
+'''
+
+class Cooldown():
+    def __init__(self):
+        self.current_time = 0
+        self.event_time = 0
+        self.delta = 0
+    def ticking(self):
+        self.current_time = floor((pg.time.get_ticks())/1000)
+        self.delta = self.current_time - self.event_time
+    def countdown(self, x):
+        x = x - self.delta
+        if x != None:
+            return x
+    def event_reset(self):
+        self.event_time = floor((pg.time.get_ticks())/1000)
+    def timer(self):
+        self.current_time = floor((pg.time.get_ticks())/1000)
+
 # Create a game class
 class Game:
     # Define intalizing
@@ -19,15 +46,15 @@ class Game:
         # Setting the time
         # frames per seconds pretty much
         self.clock = pg.time.Clock()
-        pg.key.set_repeat(500, 100)
-        self.running = True
+        # pg.key.set_repeat(500, 100)
+        # self.running = True
         self.load_data()
         #Running the game
         #later on we'll store game into with this
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'images')
-        self.player_img = pg.image.load(path.join(img_folder, 'Untitled.png')).convert_alpha()
+        self.player_img = pg.image.load(path.join(img_folder, 'Mario.png')).convert_alpha()
         self.map_data = []
         '''
         The with statement is a context manager in Python. 
@@ -39,13 +66,16 @@ class Game:
             for line in f:
                 print(line)
                 self.map_data.append(line)
-                print(self.map_data)
+                # print(self.map_data)
     def new(self):
+        self.test_timer = Cooldown()
+        print("create new game...")
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bigger = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.power_ups = pg.sprite.Group()
+        self.mobs = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_spritres.add(self.player)
         #  for x in range(10, 20):
@@ -65,6 +95,8 @@ class Game:
                     Coin(self, col, row)
                 if tile == 'U':
                     PowerUp(self, col, row)
+                if tile == 'M':
+                    Mob(self, col, row)
     
     #Run methods, causes the game to work
     def run(self):
@@ -83,8 +115,8 @@ class Game:
         pg.quit()
         sys.exit()
     # method
-    def input(self):
-        pass 
+    # def input(self):
+        # pass 
     #print(self.clock.get_fps())
 
     # new motion
@@ -92,6 +124,7 @@ class Game:
     # UPDATE THE UPDATE
     def update(self):
         self.all_sprites.update()
+        self.test_timer.ticking()
         
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -111,7 +144,18 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
+        self.draw_text(self.screen, str(self.test_timer.countdown(45)), 24, WHITE, WIDTH/2 - 32, 2)
         pg.display.flip()
+    
+    def draw_text(self, surface, text, size, color, x, y):
+        font_name = pg.font.match('arial')
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.topleft = (x,y)
+        surface.blit(text_surface, text_rect)
+    
+
     
     #events, and checks if we clicked 'X'
     def events(self):
@@ -134,10 +178,10 @@ class Game:
                 # if event.type == pg.KEYDOWN:
                     # if event.key == pg.K_DOWN:
                         # self.player.move(dx = 1)
-    def show_start_screen(self):
-        pass
-    def show_go_screen(self):
-        pass
+    # def show_start_screen(self):
+    #     pass
+    # def show_go_screen(self):
+    #     pass
 # Assign Game to g
 g = Game()
 # g.show_g_screen()
