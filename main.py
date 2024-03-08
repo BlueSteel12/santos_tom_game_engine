@@ -13,7 +13,7 @@ Game design truths:
 goals, rules, feedback, freedom, what the verb, and will it form a sentence 
 
 - Sound effects
-- Changing enenmies
+- Changing enemies
 - Teleportation
 '''
 
@@ -76,6 +76,8 @@ class Game:
         self.coins = pg.sprite.Group()
         self.power_ups = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+        self.teleport = pg.sprite.Group()
+        self.pew_pews = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_spritres.add(self.player)
         #  for x in range(10, 20):
@@ -97,6 +99,8 @@ class Game:
                     PowerUp(self, col, row)
                 if tile == 'M':
                     Mob(self, col, row)
+                if tile == 't':
+                    Teleport(self, col, row)
     
     #Run methods, causes the game to work
     def run(self):
