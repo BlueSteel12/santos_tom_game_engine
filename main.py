@@ -152,7 +152,7 @@ class Game:
         pg.display.flip()
     
     def draw_text(self, surface, text, size, color, x, y):
-        font_name = pg.font.match('arial')
+        font_name = pg.font.match_font('arial')
         font = pg.font.Font(font_name, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()

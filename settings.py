@@ -13,3 +13,6 @@ LIGHTGREY = (217, 217, 214)
 PLAYER_SPEED = 300
 RED = (255, 0, 0)
 PURPLE = (255,0,255)
+BLUE = (0,0,255)
+
+POWER_UP_EFFECTS = ["I can fly", "I'm invincible", "I'm bulletproof"]
