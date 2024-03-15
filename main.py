@@ -75,7 +75,7 @@ class Game:
         self.bigger = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.power_ups = pg.sprite.Group()
-        self.mobs = pg.sprite.Group()
+        self.mob = pg.sprite.Group()
         self.teleport = pg.sprite.Group()
         self.pew_pews = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
@@ -152,7 +152,7 @@ class Game:
         pg.display.flip()
     
     def draw_text(self, surface, text, size, color, x, y):
-        font_name = pg.font.match('arial')
+        font_name = pg.font.match_font('arial')
         font = pg.font.Font(font_name, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
