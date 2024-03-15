@@ -75,7 +75,7 @@ class Game:
         self.bigger = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.power_ups = pg.sprite.Group()
-        self.mobs = pg.sprite.Group()
+        self.mob = pg.sprite.Group()
         self.teleport = pg.sprite.Group()
         self.pew_pews = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
