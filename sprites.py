@@ -2,7 +2,10 @@
 # Appreciation to Chris Bradfield
 # Write a player class
 # Rewrite a wall class
-
+'''
+Sources:
+https://stackoverflow.com/questions/48106441/how-do-i-teleport-the-turtle-in-python
+'''
 import pygame as pg
 from settings import *
 from random import choice
@@ -150,7 +153,6 @@ class Mob(pg.sprite.Sprite):
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image.fill(RED)
-        self.image = self.game.mob_img
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
