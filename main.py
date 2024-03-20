@@ -103,6 +103,7 @@ class Game:
                     Mob(self, col, row)
                 if tile == 't':
                     Teleport(self, col, row)
+        # creating a variable for each class
     
     #Run methods, causes the game to work
     def run(self):
@@ -152,6 +153,7 @@ class Game:
         self.all_sprites.draw(self.screen)
         self.draw_text(self.screen, str(self.test_timer.countdown(45)), 24, WHITE, WIDTH/2 - 32, 2)
         pg.display.flip()
+        # creating the timer
     
     def draw_text(self, surface, text, size, color, x, y):
         font_name = pg.font.match_font('arial')
@@ -160,6 +162,7 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.topleft = (x,y)
         surface.blit(text_surface, text_rect)
+    # actually having the text show on the screen
     
 
     

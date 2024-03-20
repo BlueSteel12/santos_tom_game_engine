@@ -28,6 +28,7 @@ class Player(pg.sprite.Sprite):
         self.status = ""
         self.hitpoints = 100
     def detath(self):
+        # defining what detath is
         self.x = self.game.playercol*TILESIZE
         self.y = self.game.playerrow*TILESIZE
     def get_keys(self):
@@ -45,6 +46,7 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_DOWN] or keys[pg.K_s]:
             self.vy = self.speed
         if keys[pg.K_e]:
+            # when e is pressed then it shoots
             self.pew()
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
@@ -60,11 +62,13 @@ class Player(pg.sprite.Sprite):
         if hits:
             if str(hits[0].__class__.__name__) == "Coin":
                 self.moneybag += 1
+                # creating a coin collecting system
             if str(hits[0].__class__.__name__) == "PowerUp":
                 print(hits[0].__class__.__name__)
                 effect = choice(POWER_UP_EFFECTS)
                 print(effect)
                 self.speed += 200
+                # making player speed faster
             # if str(hits[0].__class__.__name__) == "Mob":
             #     print(effect)
             #     self.quit
@@ -73,21 +77,17 @@ class Player(pg.sprite.Sprite):
                 effect = choice(TELEPORT_EFFECTS)
                 print(effect)
                 self.rect.height = self.rect.height * 2
-                self.rect.width - self.rect.width * 2
-                # hits = pg.sprite.spritecollide(self, self.game, True)
-                # if hits:
-                #     self.rect.height = self.rect.height * 2
-                #     self.rect.width = self.rect.width * 2
-                #     self.image.fill((GREEN))
-                # self.scale += 2
-                    
+                self.rect.width = self.rect.width * 2
+                # making player size bigger
             if str(hits[0].__class__.__name__) == "Teleport":
                 print(hits[0].__class__.__name__)
                 effect = choice(TELEPORT_EFFECTS)
                 print(effect)
                 self.detath()
+                # used the same way to kill the player to teleport it
             if str(hits[0].__class__.__name__) == "Mob":
                 self.detath()
+                # making it so when the player hits the mob it dies
 
                 
     def collide_with_walls(self, dir):
@@ -141,6 +141,7 @@ class Player(pg.sprite.Sprite):
         # self.collide_with_group(self.game.mob, False)
         self.collide_with_group(self.game.teleport, False)
         self.collide_with_group(self.game.mob, False)
+        # making it so you can collide with with the blocks or not
 
 
 
@@ -168,6 +169,7 @@ class Wall(pg.sprite.Sprite):
 
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
+        # defining the mob
         self.groups = game.all_sprites, game.mob
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -223,6 +225,7 @@ class Bigger(pg.sprite.Sprite):
     self.y = y
     self.rect.x = x * TILESIZE
     self. rect.y = y *TILESIZE
+    # defining the bigger thing
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.coins
@@ -235,6 +238,7 @@ class Coin(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        # defining the coin
 
 class Teleport(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -248,6 +252,7 @@ class Teleport(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        # defining the teleporter
 
 class PowerUp(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -261,6 +266,7 @@ class PowerUp(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        # defining the speed boost power up
 
 class PewPews(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -276,11 +282,14 @@ class PewPews(pg.sprite.Sprite):
         self.rect.y = y
         self.speed = 10
         print("I created a pew pew...")
+        # creating the design of the pew pew
+        # when the pew pew is shot it will say it is shot to show that it is happening
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
     def update(self):
         self.collide_with_group(self.game.mob, True)
         self.rect.y -= self.speed
+        # will destory mobs when it hits it
 #Question: why can't we find self.speed in github
 #Question: what is the difference between player speed and self.speed
 #Question: 
