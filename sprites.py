@@ -27,7 +27,9 @@ class Player(pg.sprite.Sprite):
         self.speed = 300
         self.status = ""
         self.hitpoints = 100
-
+    def detath(self):
+        self.x = self.game.playercol*TILESIZE
+        self.y = self.game.playerrow*TILESIZE
     def get_keys(self):
         self.vx, self.vy = 0, 0
         keys = pg.key.get_pressed()
@@ -51,7 +53,7 @@ class Player(pg.sprite.Sprite):
     def pew(self):
         p = PewPews(self.game, self.rect.x, self.rect.y)
         print(p.rect.x)
-        print.p.rect.y
+        print(p.rect.y)
 
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
@@ -62,12 +64,24 @@ class Player(pg.sprite.Sprite):
                 print(hits[0].__class__.__name__)
                 effect = choice(POWER_UP_EFFECTS)
                 print(effect)
-                if effect == "Invincibles":
-                    self.status = "Invincible"
-            if str(hits[0].class__.__name__) == "Mob":
-                if self.status =="Invincible":
-                    print("you can't hurt me")
-        
+                self.speed += 200
+            # if str(hits[0].__class__.__name__) == "Mob":
+            #     print(effect)
+            #     self.quit
+            if str(hits[0].__class__.__name__) == "Bigger":
+                print(hits[0].__class__.__name__)
+                effect = choice(TELEPORT_EFFECTS)
+                print(effect)
+                self.scale += 2
+            if str(hits[0].__class__.__name__) == "Teleport":
+                print(hits[0].__class__.__name__)
+                effect = choice(TELEPORT_EFFECTS)
+                print(effect)
+                self.setposition(100, -100)
+            if str(hits[0].__class__.__name__) == "Mob":
+                self.detath()
+
+                
     def collide_with_walls(self, dir):
         if dir == 'x':
             hits = pg.sprite.spritecollide(self, self.game.walls, False )
@@ -88,16 +102,18 @@ class Player(pg.sprite.Sprite):
                 self.vy = 0
                 self.rect.y = self.y
     def collide_with_bigger(self):
-        if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game, False)
-            if hits:
-                self.image = pg.Surface((TILESIZE * 2, TILESIZE * 2))
-                self.image.fill((GREEN))
-    def collide_with_teleport(self):
-        if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game, False)
-            if hits:
-                self.setposition(200, -200)
+        hits = pg.sprite.spritecollide(self, self.game, True)
+        if hits:
+            self.rect.height = self.rect.height * 2
+            self.rect.width = self.rect.width * 2
+            self.image.fill((GREEN))
+
+    # def collide_with_teleport(self):
+    #     if dir == 'x':
+    #         hits = pg.sprite.spritecollide(self, self.game, True)
+    #         if hits:
+    #             self.setposition(200, -200)
+
                 
     # old motion
     # def move(self, dx=0, dy=0):
@@ -117,11 +133,13 @@ class Player(pg.sprite.Sprite):
         self.collide_with_walls('y')
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
-        self.collide_with_bigger
+        self.collide_with_group(self.game.bigger, True)
         self.collide_with_group(self.game.coins, True)
         self.collide_with_group(self.game.power_ups, True)
         # self.collide_with_group(self.game.mob, False)
         self.collide_with_group(self.game.teleport, True)
+        self.collide_with_group(self.game.mob, False)
+
 
 
 class Wall(pg.sprite.Sprite):
@@ -193,7 +211,7 @@ class Mob(pg.sprite.Sprite):
 
 class Bigger(pg.sprite.Sprite):
    def __init__(self, game, x, y):
-    self.groups = game.all_sprites, game.walls
+    self.groups = game.all_sprites, game.bigger
     pg.sprite.Sprite.__init__(self, self.groups)
     self.game = game
     self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -203,7 +221,6 @@ class Bigger(pg.sprite.Sprite):
     self.y = y
     self.rect.x = x * TILESIZE
     self. rect.y = y *TILESIZE
-
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.coins
@@ -251,12 +268,17 @@ class PewPews(pg.sprite.Sprite):
         self.image = pg.Surface((TILESIZE/4, TILESIZE/4))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
-        self.x = y
+        self.x = x
         self.y = y
-        self.rect.x = x * TILESIZE
-        self. rect.y = y *TILESIZE
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = 10
+        print("I created a pew pew...")
+    def collide_with_group(self, group, kill):
+        hits = pg.sprite.spritecollide(self, group, kill)
     def update(self):
-        self.rect.y = -1
+        self.collide_with_group(self.game.mob, True)
+        self.rect.y -= self.speed
 #Question: why can't we find self.speed in github
 #Question: what is the difference between player speed and self.speed
 #Question: 

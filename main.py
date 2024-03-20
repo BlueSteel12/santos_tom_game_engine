@@ -91,7 +91,9 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'p':
                     self.player = Player(self, col, row)
-                if tile == '*':
+                    self.playercol = col
+                    self.playerrow = row
+                if tile == 'B':
                     Bigger(self, col, row)
                 if tile == 'C':
                     Coin(self, col, row)

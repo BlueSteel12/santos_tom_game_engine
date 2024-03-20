@@ -16,3 +16,4 @@ PURPLE = (255,0,255)
 BLUE = (0,0,255)
 
 POWER_UP_EFFECTS = ["I can fly", "I'm invincible", "I'm bulletproof"]
+TELEPORT_EFFECTS = ["Haha, I tricked you"]
