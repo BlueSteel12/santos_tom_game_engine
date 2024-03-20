@@ -72,12 +72,20 @@ class Player(pg.sprite.Sprite):
                 print(hits[0].__class__.__name__)
                 effect = choice(TELEPORT_EFFECTS)
                 print(effect)
-                self.scale += 2
+                self.rect.height = self.rect.height * 2
+                self.rect.width - self.rect.width * 2
+                # hits = pg.sprite.spritecollide(self, self.game, True)
+                # if hits:
+                #     self.rect.height = self.rect.height * 2
+                #     self.rect.width = self.rect.width * 2
+                #     self.image.fill((GREEN))
+                # self.scale += 2
+                    
             if str(hits[0].__class__.__name__) == "Teleport":
                 print(hits[0].__class__.__name__)
                 effect = choice(TELEPORT_EFFECTS)
                 print(effect)
-                self.setposition(100, -100)
+                self.detath()
             if str(hits[0].__class__.__name__) == "Mob":
                 self.detath()
 
@@ -101,12 +109,6 @@ class Player(pg.sprite.Sprite):
                     self.y = hits[0].rect.bottom
                 self.vy = 0
                 self.rect.y = self.y
-    def collide_with_bigger(self):
-        hits = pg.sprite.spritecollide(self, self.game, True)
-        if hits:
-            self.rect.height = self.rect.height * 2
-            self.rect.width = self.rect.width * 2
-            self.image.fill((GREEN))
 
     # def collide_with_teleport(self):
     #     if dir == 'x':
@@ -137,7 +139,7 @@ class Player(pg.sprite.Sprite):
         self.collide_with_group(self.game.coins, True)
         self.collide_with_group(self.game.power_ups, True)
         # self.collide_with_group(self.game.mob, False)
-        self.collide_with_group(self.game.teleport, True)
+        self.collide_with_group(self.game.teleport, False)
         self.collide_with_group(self.game.mob, False)
 
 
